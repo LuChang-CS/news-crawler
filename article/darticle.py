@@ -1,3 +1,4 @@
+import sys
 import os.path
 import json
 import time
@@ -76,6 +77,7 @@ class ArticleFetcher:
             titles = list()
             for link in links:
                 print('>>> {c} in {t} articles\r'.format(c=current_link, t=total_links), end='')
+                sys.stdout.flush()
                 current_link += 1
 
                 article = self._extract_information(link)
@@ -99,6 +101,7 @@ class ArticleFetcher:
         with open(titles_path, mode='w', encoding='utf-8') as titles_file:
             for article_index, link in enumerate(links):
                 print('{c} in {t} articles\r'.format(c=current_link, t=total_links), end='')
+                sys.stdout.flush()
                 current_link += 1
 
                 article = self._extract_information(link)
@@ -112,12 +115,11 @@ class ArticleFetcher:
     def fetch(self, lazy_storage=True):
         current_date = 1
         while True:
-            print('{c} in {t} dates'.format(c=current_date, t=self.total_date))
-            current_date += 1
-
             api_url, date = self.download_link_fetcher.next()
             if api_url is None:
                 break
+            print('{c} in {t} dates'.format(c=current_date, t=self.total_date))
+
             storage_path = self._get_storage_path(self.path, date)
             links = self.download_link_fetcher.fetch(api_url)
             if lazy_storage:
@@ -126,3 +128,6 @@ class ArticleFetcher:
                 self._non_lazy_storage(storage_path, links)
 
             time.sleep(self.config.sleep)
+
+            print('date {c} finished'.format(c=current_date))
+            current_date += 1
