@@ -1,5 +1,6 @@
 import os.path
 import json
+import time
 from datetime import timedelta
 
 from network.network import NetworkFetcher
@@ -8,6 +9,7 @@ from network.network import NetworkFetcher
 class ArticleFetcher:
 
     def __init__(self, config):
+        self.config = config
         self.download_link_fetcher = None
         self.html_fetcher = NetworkFetcher()
         self.path = config.path
@@ -98,3 +100,5 @@ class ArticleFetcher:
                 self._lazy_storage(storage_path, links)
             else:
                 self._non_lazy_storage(storage_path, links)
+
+            time.sleep(self.config.sleep)

@@ -27,5 +27,6 @@ class DatasetConfiguration(Configuration):
             ['end_date', '2017-01-01', self._format_date],
             ['step_unit', 'day', str],
             ['step', 1, self._calculate_step],
-            ['path', '', str]
+            ['path', '', str],
+            ['sleep', 0.2, float]
         ]
