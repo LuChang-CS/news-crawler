@@ -44,6 +44,7 @@ class DownloadLinkFetcher:
         return api_url, date
 
     def fetch(self, api_url):
+        print('fetching download links...')
         html = self.html_fetcher.fetch(api_url)
         links = self._html_to_links(html)
         return links

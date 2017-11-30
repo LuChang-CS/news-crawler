@@ -14,6 +14,8 @@ class ArticleFetcher:
         self.html_fetcher = NetworkFetcher()
         self.path = config.path
 
+        self.total_date = 0
+
         self._mkdir(self.path,
                     config.start_date,
                     config.end_date,
@@ -21,6 +23,10 @@ class ArticleFetcher:
 
     def _mkdir(self, path, start_date, end_date, step):
         if os.path.isdir(path):
+            current_date = start_date
+            while current_date < end_date:
+                current_date += step
+                self.total_date += 1
             return
         else:
             os.makedirs(path)
@@ -48,6 +54,8 @@ class ArticleFetcher:
             os.mkdir(day_path)
             current_date += step
 
+            self.total_date += 1
+
     def _html_to_infomation(self, html, link):
         return {}
 
@@ -59,11 +67,17 @@ class ArticleFetcher:
         return os.path.join(path, str(date.year), str(date.month), str(date.day))
 
     def _lazy_storage(self, storage_path, links):
+        total_links = len(links)
+        current_link = 1
+
         titles_path = os.path.join(storage_path, 'titles')
         with open(titles_path, mode='w', encoding='utf-8') as titles_file:
             articles = list()
             titles = list()
             for link in links:
+                print('>>> {c} in {t} articles\r'.format(c=current_link, t=total_links), end='')
+                current_link += 1
+
                 article = self._extract_information(link)
                 if article is not None:
                     titles.append(article['title'] + '\n')
@@ -78,9 +92,15 @@ class ArticleFetcher:
             titles_file.writelines(titles)
 
     def _non_lazy_storage(self, storage_path, links):
+        total_links = len(links)
+        current_link = 1
+
         titles_path = os.path.join(storage_path, 'titles')
         with open(titles_path, mode='w', encoding='utf-8') as titles_file:
             for article_index, link in enumerate(links):
+                print('{c} in {t} articles\r'.format(c=current_link, t=total_links), end='')
+                current_link += 1
+
                 article = self._extract_information(link)
                 if article is not None:
                     titles_file.write(article['title'] + '\n')
@@ -90,7 +110,11 @@ class ArticleFetcher:
                         json.dump(article, article_file, indent=4)
 
     def fetch(self, lazy_storage=True):
+        current_date = 1
         while True:
+            print('{c} in {t} dates'.format(c=current_date, t=self.total_date))
+            current_date += 1
+
             api_url, date = self.download_link_fetcher.next()
             if api_url is None:
                 break
