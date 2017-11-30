@@ -1,8 +1,3 @@
-from datetime import datetime
-
-from dateutil.relativedelta import relativedelta
-from configobj import ConfigObj
-
 from settings.dataset_conf import DatasetConfiguration
 from bbc_article import BBCArticleFetcher
 

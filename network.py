@@ -1,24 +1,21 @@
 import weakref
 import requests
 
-from configobj import ConfigObj
+from settings.configuration import Configuration
 
-class NetWorkConfiguration:
+
+class NetWorkConfiguration(Configuration):
 
     HTTP_TIMEOUT = 30
     STRICT = True
     USER_AGENT = 'Mozilla'
 
-    def __init__(self):
-        self.browser_user_agent = self.USER_AGENT
-        self.http_timeout = self.HTTP_TIMEOUT
-        self.strict = self.STRICT
-
-    def load(self, path):
-        config = ConfigObj(path, encoding='UTF-8')
-        self.browser_user_agent = config.get('browser_user_agent', self.USER_AGENT)
-        self.http_timeout = int(config.get('http_timeout', self.HTTP_TIMEOUT))
-        self.strict = bool(config.get('strict', self.STRICT))
+    def _init_properties(self):
+        return [
+            ['browser_user_agent', 'Mozilla', str],
+            ['http_timeout', 30, int],
+            ['strict', True, bool]
+        ]
 
 
 class NetworkError(RuntimeError):
