@@ -16,20 +16,8 @@ class BBCArticleFetcher(ArticleFetcher):
     def _extract_title(self, soup):
         return soup.title.get_text()
 
-    def _extract_published_date(self, soup, link):
-        published_date_element = soup.find('meta', property='rnews:datePublished')
-        if published_date_element is not None:
-            return published_date_element['content']
-        meta_script = soup.script
-        script_text = meta_script.get_text().strip().replace('\\n', '')
-        meta_info = json.loads(script_text, encoding='utf-8')
-        published_date = meta_info.get('datePublished', None)
-        if published_date is None:
-            video = meta_info.get('video', None)
-            if video is not None:
-                published_date = video['uploadDate']
-
-        return published_date
+    def _extract_published_date(self, date):
+        return date.strftime('%Y-%m-%d')
 
     def _extract_authors(self, soup):
         authors_elements = soup.find_all('meta', property='article:author')
@@ -48,13 +36,13 @@ class BBCArticleFetcher(ArticleFetcher):
         article = g.extract(raw_html=html)
         return article.cleaned_text
 
-    def _html_to_infomation(self, html, link):
+    def _html_to_infomation(self, html, link, date):
         soup = BeautifulSoup(html, 'lxml')
         head = soup.head
 
         try:
             title = self._extract_title(head)
-            published_date = self._extract_published_date(head, link)
+            published_date = self._extract_published_date(date)
             authors = self._extract_authors(head)
             description = self._extract_description(head)
             section = self._extract_section(head)

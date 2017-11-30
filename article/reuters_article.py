@@ -14,9 +14,8 @@ class ReutersArticleFetcher(ArticleFetcher):
     def _extract_title(self, soup):
         return soup.title.get_text()
 
-    def _extract_published_date(self, soup, link):
-        published_date_element = soup.find('meta', property='og:article:published_time')
-        return published_date_element['content']
+    def _extract_published_date(self, date):
+        return date.strftime('%Y-%m-%d')
 
     def _extract_authors(self, soup):
         authors_elements = soup.find_all('meta', property='og:article:author')
@@ -35,23 +34,15 @@ class ReutersArticleFetcher(ArticleFetcher):
         article = g.extract(raw_html=html)
         return article.cleaned_text
 
-    def _html_to_infomation(self, html, link):
+    def _html_to_infomation(self, html, link, date):
         soup = BeautifulSoup(html, 'html5lib')
         # Reuters html page has a `<div>` in head,
         # which leads to an unexpected end of head
         head = soup
 
-        print(link)
-        title = self._extract_title(head)
-        published_date = self._extract_published_date(head, link)
-        authors = self._extract_authors(head)
-        description = self._extract_description(head)
-        section = self._extract_section(head)
-        content = self._extract_content(html)
-
         try:
             title = self._extract_title(head)
-            published_date = self._extract_published_date(head, link)
+            published_date = self._extract_published_date(date)
             authors = self._extract_authors(head)
             description = self._extract_description(head)
             section = self._extract_section(head)

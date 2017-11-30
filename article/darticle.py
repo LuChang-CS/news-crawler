@@ -57,17 +57,17 @@ class ArticleFetcher:
 
             self.total_date += 1
 
-    def _html_to_infomation(self, html, link):
+    def _html_to_infomation(self, html, link, date):
         return {}
 
-    def _extract_information(self, link):
+    def _extract_information(self, link, date):
         html = self.html_fetcher.fetch(link)
-        return self._html_to_infomation(html, link)
+        return self._html_to_infomation(html, link, date)
 
     def _get_storage_path(self, path, date):
         return os.path.join(path, str(date.year), str(date.month), str(date.day))
 
-    def _lazy_storage(self, storage_path, links):
+    def _lazy_storage(self, storage_path, links, date):
         total_links = len(links)
         current_link = 1
 
@@ -79,7 +79,7 @@ class ArticleFetcher:
                 print('>>> {c} in {t} articles\r'.format(c=current_link, t=total_links), end='')
                 current_link += 1
 
-                article = self._extract_information(link)
+                article = self._extract_information(link, date)
                 if article is not None:
                     titles.append(article['title'] + '\n')
                     articles.append(article)
@@ -92,7 +92,7 @@ class ArticleFetcher:
                 }, articles_file, indent=4)
             titles_file.writelines(titles)
 
-    def _non_lazy_storage(self, storage_path, links):
+    def _non_lazy_storage(self, storage_path, links, date):
         total_links = len(links)
         current_link = 1
 
@@ -102,7 +102,7 @@ class ArticleFetcher:
                 print('{c} in {t} articles\r'.format(c=current_link, t=total_links), end='')
                 current_link += 1
 
-                article = self._extract_information(link)
+                article = self._extract_information(link, date)
                 if article is not None:
                     titles_file.write(article['title'] + '\n')
 
@@ -121,9 +121,9 @@ class ArticleFetcher:
             storage_path = self._get_storage_path(self.path, date)
             links = self.download_link_fetcher.fetch(api_url)
             if lazy_storage:
-                self._lazy_storage(storage_path, links)
+                self._lazy_storage(storage_path, links, date)
             else:
-                self._non_lazy_storage(storage_path, links)
+                self._non_lazy_storage(storage_path, links, date)
 
             time.sleep(self.config.sleep)
 
