@@ -18,6 +18,10 @@ class ArticleFetcher:
                     config.step)
 
     def _mkdir(self, path, start_date, end_date, step):
+        if os.path.isdir(path):
+            return
+        else:
+            os.makedirs(path)
         step = timedelta(days=1)
         current_date = start_date
         existed_years = dict()
@@ -28,7 +32,7 @@ class ArticleFetcher:
 
             year_path = os.path.join(path, str(year))
             month_path = os.path.join(year_path, str(month))
-            day_path = os.path.join(month_path, day)
+            day_path = os.path.join(month_path, str(day))
 
             if year not in existed_years.keys():
                 existed_years[year] = dict()
@@ -37,17 +41,17 @@ class ArticleFetcher:
             year_content = existed_years[year]
             if month not in year_content.keys():
                 year_content[month] = True
-                os.mkdir(month)
+                os.mkdir(month_path)
 
             os.mkdir(day_path)
             current_date += step
 
-    def _html_to_infomation(self, html):
+    def _html_to_infomation(self, html, link):
         return {}
 
     def _extract_information(self, link):
         html = self.html_fetcher.fetch(link)
-        return self._html_to_infomation(html)
+        return self._html_to_infomation(html, link)
 
     def _get_storage_path(self, path, date):
         return os.path.join(path, str(date.year), str(date.month), str(date.day))
@@ -59,27 +63,29 @@ class ArticleFetcher:
             titles = list()
             for link in links:
                 article = self._extract_information(link)
-                titles.append(article['title'] + '\n')
-                articles.append(article)
+                if article is not None:
+                    titles.append(article['title'] + '\n')
+                    articles.append(article)
 
             articles_path = os.path.join(storage_path, 'articles')
             with open(articles_path, mode='w', encoding='utf-8') as articles_file:
                 json.dump({
                     'number': len(articles),
                     'articles': articles
-                }, articles_file)
-            titles_file.write(titles)
+                }, articles_file, indent=4)
+            titles_file.writelines(titles)
 
     def _non_lazy_storage(self, storage_path, links):
         titles_path = os.path.join(storage_path, 'titles')
         with open(titles_path, mode='w', encoding='utf-8') as titles_file:
             for article_index, link in enumerate(links):
                 article = self._extract_information(link)
-                titles_file.write(article['title'] + '\n')
+                if article is not None:
+                    titles_file.write(article['title'] + '\n')
 
-                article_path = os.path.join(storage_path, str(article_index))
-                with open(article_path, mode='w', encoding='utf-8') as article_file:
-                    json.dump(article, article_file)
+                    article_path = os.path.join(storage_path, str(article_index))
+                    with open(article_path, mode='w', encoding='utf-8') as article_file:
+                        json.dump(article, article_file, indent=4)
 
     def fetch(self, lazy_storage=True):
         while True:

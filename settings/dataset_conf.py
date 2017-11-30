@@ -2,7 +2,7 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 
-from configuration import Configuration
+from .configuration import Configuration
 
 
 class DatasetConfiguration(Configuration):
@@ -11,6 +11,7 @@ class DatasetConfiguration(Configuration):
         return datetime.strptime(date_str, '%Y-%m-%d')
 
     def _calculate_step(self, step):
+        step = int(step)
         if self.step_unit == 'day':
             return relativedelta(days=step)
         elif self.step_unit == 'month':
@@ -20,6 +21,7 @@ class DatasetConfiguration(Configuration):
 
     def _init_properties(self):
         return [
+            ['name', '', str],
             ['base_api_url', '', str],
             ['start_date', '2016-01-01', self._format_date],
             ['end_date', '2017-01-01', self._format_date],
