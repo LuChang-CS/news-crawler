@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from dlink import DownloadLinkFetcher
+from .dlink import DownloadLinkFetcher
 
 
 

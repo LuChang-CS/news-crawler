@@ -3,8 +3,8 @@ import json
 from bs4 import BeautifulSoup
 from goose3 import Goose
 
-from darticle import ArticleFetcher
-from bbc_link import BBCLinkFetcher
+from .darticle import ArticleFetcher
+from link.bbc_link import BBCLinkFetcher
 
 
 class BBCArticleFetcher(ArticleFetcher):

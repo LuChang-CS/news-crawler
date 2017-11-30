@@ -1,5 +1,5 @@
 from settings.dataset_conf import DatasetConfiguration
-from bbc_article import BBCArticleFetcher
+from article.bbc_article import BBCArticleFetcher
 
 
 if __name__ == '__main__':

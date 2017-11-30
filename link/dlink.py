@@ -1,4 +1,4 @@
-from network import NetworkFetcher
+from network.network import NetworkFetcher
 
 class DownloadLinkFetcher:
 

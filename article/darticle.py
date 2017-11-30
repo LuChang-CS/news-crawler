@@ -2,7 +2,7 @@ import os.path
 import json
 from datetime import timedelta
 
-from network import NetworkFetcher
+from network.network import NetworkFetcher
 
 
 class ArticleFetcher:
