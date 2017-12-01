@@ -32,7 +32,7 @@ class DownloadLinkFetcher:
     def _html_to_links(self, html):
         return []
 
-    def _next_api(self, base_api_url, current_date):
+    def _next_api(self, base_url, current_date):
         return ''
 
     def next(self):
