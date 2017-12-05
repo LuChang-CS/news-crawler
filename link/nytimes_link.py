@@ -16,6 +16,10 @@ class NytimesLinkFetcher(DownloadLinkFetcher):
 
         self.month_links = []
 
+        self.start_date = config.start_date_
+        self.current_date = config.start_date_
+        self.end_date = config.end_date_
+
     def _fetch_year_links(self):
         print('fetching new years links')
         html = self.html_fetcher.fetch(self.current_api_url)

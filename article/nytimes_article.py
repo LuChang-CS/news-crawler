@@ -2,7 +2,9 @@ import os
 
 from bs4 import BeautifulSoup
 from goose3 import Goose
+from dateutil.relativedelta import relativedelta
 
+from network.network import NetworkFetcher
 from .darticle import ArticleFetcher
 from link.nytimes_link import NytimesLinkFetcher
 
@@ -10,7 +12,23 @@ from link.nytimes_link import NytimesLinkFetcher
 class NytimeArticleFetcher(ArticleFetcher):
 
     def __init__(self, config):
-        super(NytimeArticleFetcher, self).__init__(config)
+        self.config = config
+        self.download_link_fetcher = None
+        self.html_fetcher = NetworkFetcher()
+        self.path = config.path
+
+        self.total_date = 0
+
+        config.start_date_ = config.start_date.replace(day=1)
+        if config.end_date.day > 1:
+            config.end_date_ = config.end_date.replace(day=1)
+            config.end_date_ += relativedelta(months=1)
+
+        self._mkdir(self.path,
+                    config.start_date_,
+                    config.end_date_,
+                    config.step)
+
         self.download_link_fetcher = NytimesLinkFetcher(config)
 
     def _get_storage_path(self, path, date):
