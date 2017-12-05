@@ -31,7 +31,6 @@ class ArticleFetcher:
             return
         else:
             os.makedirs(path)
-        step = timedelta(days=1)
         current_date = start_date
         existed_years = dict()
         while current_date < end_date:
