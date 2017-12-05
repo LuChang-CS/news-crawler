@@ -97,6 +97,7 @@ class ArticleFetcher:
             articles_path = os.path.join(storage_path, 'articles')
             with open(articles_path, mode='w', encoding='utf-8') as articles_file:
                 json.dump({
+                    'expected_number': len(links),
                     'number': len(articles),
                     'articles': articles
                 }, articles_file, indent=4)
