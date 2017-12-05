@@ -14,7 +14,7 @@ class NetWorkConfiguration(Configuration):
         return [
             ['browser_user_agent', 'Mozilla', str],
             ['http_timeout', 30, int],
-            ['strict', True, bool]
+            ['strict', True, lambda v: str(v) == 'True']
         ]
 
 

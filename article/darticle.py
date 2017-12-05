@@ -63,6 +63,8 @@ class ArticleFetcher:
 
     def _extract_information(self, link, date):
         html = self.html_fetcher.fetch(link)
+        if html is None:
+            return None
         return self._html_to_infomation(html, link, date)
 
     def _get_storage_path(self, path, date):
