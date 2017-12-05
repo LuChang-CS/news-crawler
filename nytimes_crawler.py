@@ -11,14 +11,13 @@ def parse_nytimes(fetcher):
     config = fetcher.config
     current_date = config.start_date
     while current_date < config.end_date:
-        storage_path = fetcher._get_storage_path(config.path,
-                                                 str(current_date.year), str(current_date.month))
+        storage_path = fetcher._get_storage_path(config.path, current_date)
         articles_path = os.path.join(storage_path, 'articles')
         with open(articles_path, encoding='utf-8') as articles_file:
             articles = json.load(articles_file)
             day_articles = list()
             day_titles = list()
-            for i in range(0, 31):
+            for _ in range(0, 31):
                 day_articles.append([])
                 day_titles.append([])
             for article in articles['articles']:
@@ -26,7 +25,7 @@ def parse_nytimes(fetcher):
                 day_articles[day - 1].append(article)
                 day_titles[day - 1].append(article['title'] + '\n')
 
-            day_step = relativedelta(day=1)
+            day_step = relativedelta(days=1)
             month_start_date = current_date
             month_end_date = month_start_date + relativedelta(months=1)
             month_end_date.replace(day=1)
@@ -34,7 +33,7 @@ def parse_nytimes(fetcher):
                 month_end_date = config.end_date
 
             month_current_date = month_start_date
-            while month_start_date < month_end_date:
+            while month_current_date < month_end_date:
                 day = month_current_date.day
                 day_path = os.path.join(storage_path, str(day))
                 if not os.path.isdir(day_path):
