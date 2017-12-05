@@ -32,7 +32,7 @@ python bbc_crawler.py
 python reuters_crawler.py
 ```
 
-### NewYork Times
+### New York Times
 
 ```bash
 python nytimes_crawler.py
