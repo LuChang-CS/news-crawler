@@ -71,6 +71,7 @@ class ArticleFetcher:
                 if html is not None:
                     break
         if html is None:
+            print('article ', link, 'failed')
             return None
         return self._html_to_infomation(html, link, date)
 
