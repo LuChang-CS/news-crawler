@@ -48,7 +48,10 @@ class NetworkFetcher(object):
         return self._url
 
     def fetch(self, url):
-        response = self._connection.get(url, timeout=self.config.http_timeout, headers=self.headers)
+        try:
+            response = self._connection.get(url, timeout=self.config.http_timeout, headers=self.headers)
+        except Exception:
+            return None
         if response.ok:
             self._url = response.url
             text = response.content

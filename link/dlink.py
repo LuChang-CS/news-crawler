@@ -2,6 +2,8 @@ from network.network import NetworkFetcher
 
 class DownloadLinkFetcher:
 
+    RETRY = 5
+
     def __init__(self, config):
         self.base_api_url = config.base_api_url
 
@@ -46,5 +48,10 @@ class DownloadLinkFetcher:
     def fetch(self, api_url):
         print('fetching download links...')
         html = self.html_fetcher.fetch(api_url)
+        if html is None:
+            for _ in range(0, self.RETRY):
+                html = self.html_fetcher.fetch(api_url)
+                if html is not None:
+                    break
         links = self._html_to_links(html)
         return links

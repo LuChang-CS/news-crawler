@@ -9,6 +9,8 @@ from network.network import NetworkFetcher
 
 class ArticleFetcher:
 
+    RETRY = 5
+
     def __init__(self, config):
         self.config = config
         self.download_link_fetcher = None
@@ -63,6 +65,11 @@ class ArticleFetcher:
 
     def _extract_information(self, link, date):
         html = self.html_fetcher.fetch(link)
+        if html is None:
+            for _ in range(0, self.RETRY):
+                html = self.html_fetcher.fetch(link)
+                if html is not None:
+                    break
         if html is None:
             return None
         return self._html_to_infomation(html, link, date)
