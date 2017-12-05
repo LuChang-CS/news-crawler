@@ -46,13 +46,13 @@ class ArticleFetcher:
                 existed_years[year] = dict()
                 os.mkdir(year_path)
 
-            if (step.month is not None) or (step.day is not None):
+            if (step.months >= 0) or (step.days >= 0):
                 year_content = existed_years[year]
                 if month not in year_content.keys():
                     year_content[month] = True
                     os.mkdir(month_path)
 
-            if step.day is not None:
+            if step.days >= 0:
                 os.mkdir(day_path)
             current_date += step
 
