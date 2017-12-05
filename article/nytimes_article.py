@@ -20,16 +20,16 @@ class NytimeArticleFetcher(ArticleFetcher):
         return soup.title.get_text()
 
     def _extract_published_date(self, soup):
-        publish_element = soup.find('meta', name='ptime')
+        publish_element = soup.find('meta', {'name': 'ptime'})
         date = publish_element['content']
         return '-'.join([date[:4], date[4:6], date[6:8]])
 
     def _extract_authors(self, soup):
-        authors_element = soup.find('meta', name='author')
+        authors_element = soup.find('meta', {'name': 'author'})
         return authors_element['content']
 
     def _extract_description(self, soup):
-        description_element = soup.find('meta', name='description')
+        description_element = soup.find('meta', {'name': 'description'})
         return description_element['content']
 
     def _extract_section(self, soup):
@@ -47,7 +47,7 @@ class NytimeArticleFetcher(ArticleFetcher):
 
         try:
             title = self._extract_title(head)
-            published_date = self._extract_published_date(date)
+            published_date = self._extract_published_date(head)
             authors = self._extract_authors(head)
             description = self._extract_description(head)
             section = self._extract_section(head)
