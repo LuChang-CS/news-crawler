@@ -26,7 +26,7 @@ class ReutersArticleFetcher(ArticleFetcher):
         return description_element['content']
 
     def _extract_section(self, soup):
-        section_element = soup.find('meta', property='og:article:section')
+        section_element = soup.find('meta', property='analyticsAttributes.contentChannel')
         return section_element['content']
 
     def _extract_content(self, html):
