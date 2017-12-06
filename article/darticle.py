@@ -26,11 +26,12 @@ class ArticleFetcher:
 
     def _mkdir(self, path, start_date, end_date, step):
         if os.path.isdir(path):
-            current_date = start_date
-            while current_date < end_date:
-                current_date += step
-                self.total_date += 1
-            return
+            # current_date = start_date
+            # while current_date < end_date:
+            #     current_date += step
+            #     self.total_date += 1
+            # return
+            pass
         else:
             os.makedirs(path)
         current_date = start_date
@@ -46,16 +47,19 @@ class ArticleFetcher:
 
             if year not in existed_years.keys():
                 existed_years[year] = dict()
-                os.mkdir(year_path)
+                if not os.path.isdir(year_path):
+                    os.mkdir(year_path)
 
             if (step.months > 0) or (step.days > 0):
                 year_content = existed_years[year]
                 if month not in year_content.keys():
                     year_content[month] = True
-                    os.mkdir(month_path)
+                    if not os.path.isdir(month_path):
+                        os.mkdir(month_path)
 
             if step.days > 0:
-                os.mkdir(day_path)
+                if not os.path.isdir(day_path):
+                    os.mkdir(day_path)
             current_date += step
 
             self.total_date += 1
