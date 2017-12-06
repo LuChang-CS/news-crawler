@@ -17,7 +17,8 @@ class ReutersLinkFetcher(DownloadLinkFetcher):
         soup = BeautifulSoup(html, 'lxml')
 
         links = list()
-        elements = soup.find_all('div', class_='headlineMed')
+        module_element = soup.find('div', class_='module')
+        elements = module_element.find_all('div', class_='headlineMed')
         for element in elements:
             links.append((element.a)['href'])
 
