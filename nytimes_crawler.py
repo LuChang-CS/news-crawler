@@ -1,3 +1,4 @@
+import sys
 import os.path
 import json
 
@@ -54,8 +55,10 @@ def parse_nytimes(fetcher):
         current_date += config.step
 
 if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print('please input configuration path')
     config = DatasetConfiguration()
-    config.load('./settings/nytimes.cfg')
+    config.load(sys.argv[1])
 
     nytime_article_fetcher = NytimeArticleFetcher(config)
     nytime_article_fetcher.fetch()
