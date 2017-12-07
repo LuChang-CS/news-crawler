@@ -132,7 +132,8 @@ class ArticleFetcher:
             api_url, date = self.download_link_fetcher.next()
             if api_url is None:
                 break
-            print('{c} in {t} dates                  '.format(c=current_date, t=self.total_date))
+            print(date.strftime('%Y-%m-%d'),
+                  '{c} in {t} dates                  '.format(c=current_date, t=self.total_date))
 
             storage_path = self._get_storage_path(self.path, date)
             links = self.download_link_fetcher.fetch(api_url)
@@ -143,5 +144,6 @@ class ArticleFetcher:
 
             time.sleep(self.config.sleep)
 
-            print('date {c} finished                 '.format(c=current_date))
+            print(date.strftime('%Y-%m-%d'),
+                  'date {c} finished                 '.format(c=current_date))
             current_date += 1
