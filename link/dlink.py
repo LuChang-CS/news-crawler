@@ -53,7 +53,7 @@ class DownloadLinkFetcher:
                 html = self.html_fetcher.fetch(api_url)
                 if html is not None:
                     break
-        if html is None:
+        if html is None or len(html) == 0:
             print('api', api_url, ' failed')
             return []
         links = self._html_to_links(html)
