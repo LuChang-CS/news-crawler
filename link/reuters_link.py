@@ -20,6 +20,6 @@ class ReutersLinkFetcher(DownloadLinkFetcher):
         module_element = soup.find('div', class_='module')
         elements = module_element.find_all('div', class_='headlineMed')
         for element in elements:
-            links.append((element.a)['href'])
+            links.append((element.a)['href'].replace('UK.reuters.com', 'www.reuters.com'))
 
         return list(set(links))
