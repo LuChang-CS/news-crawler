@@ -5,11 +5,14 @@ A news crawler for BBC News, Reuters and New York Times.
 ## Requirements
 
 - python3
-- configobj: `pip install configobj`
-- dateutil: `pip install python-dateutil`
-- requests: `pip install requests`
-- bs4: `pip install bs4`
-- goose3: `pip install goose3`
+- configobj
+- dateutil
+- requests
+- bs4
+- goose3
+```bash
+pip install -r requirements.txt
+```
 
 ## Architecture
 
