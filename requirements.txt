@@ -1,0 +1,16 @@
+beautifulsoup4==4.6.3
+bs4==0.0.1
+certifi==2018.8.24
+chardet==3.0.4
+configobj==5.0.6
+cssselect==1.0.3
+goose3==3.1.5
+idna==2.7
+jieba==0.39
+lxml==4.2.5
+nltk==3.3
+Pillow==5.2.0
+python-dateutil==2.7.3
+requests==2.19.1
+six==1.11.0
+urllib3==1.23
