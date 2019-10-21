@@ -8,7 +8,7 @@ goose3==3.1.5
 idna==2.7
 jieba==0.39
 lxml==4.2.5
-nltk==3.3
+nltk==3.4.5
 Pillow==5.2.0
 python-dateutil==2.7.3
 requests>=2.20.0
