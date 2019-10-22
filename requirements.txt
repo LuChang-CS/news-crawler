@@ -9,7 +9,7 @@ idna==2.7
 jieba==0.39
 lxml==4.2.5
 nltk==3.3
-Pillow==5.2.0
+Pillow==6.2.0
 python-dateutil==2.7.3
 requests>=2.20.0
 six==1.11.0
