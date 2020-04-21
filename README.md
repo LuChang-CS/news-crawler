@@ -26,19 +26,19 @@ pip install -r requirements.txt
 ### BBC News
 
 ```bash
-python bbc_crawler.py
+python bbc_crawler.py settings/bbc.cfg
 ```
 
 ### Reuters
 
 ```bash
-python reuters_crawler.py
+python reuters_crawler.py reuters.cfg
 ```
 
 ### New York Times
 
 ```bash
-python nytimes_crawler.py
+python nytimes_crawler.py nytimes.cfg
 ```
 
 ## Configuration

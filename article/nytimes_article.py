@@ -23,6 +23,8 @@ class NytimeArticleFetcher(ArticleFetcher):
         if config.end_date.day > 1:
             config.end_date_ = config.end_date.replace(day=1)
             config.end_date_ += relativedelta(months=1)
+        else:
+            config.end_date_ = config.end_date
 
         self._mkdir(self.path,
                     config.start_date_,
