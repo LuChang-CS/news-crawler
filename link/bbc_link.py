@@ -12,7 +12,8 @@ class BBCLinkFetcher(DownloadLinkFetcher):
         ['iplayer', 21, 28],
         ['radio', 21, 26],
         ['live', 27, 31],
-        ['m', 7, 8]
+        ['m', 7, 8],
+        ['video_and_audio', 26, 41]
     ]
 
     def _next_api(self, base_url, current_date):
@@ -27,11 +28,8 @@ class BBCLinkFetcher(DownloadLinkFetcher):
 
         links = list()
         # news links are the hrefs of a
-        elements = soup.table.find_all('a')
+        elements = soup.table.find_all('a', class_='title-link')
         for element in elements:
-            # this a is not news link
-            if element.get('rel', None) is not None:
-                continue
             link = self._format_link(element['href'])
             if self._link_filter(link, self.BBC_FILTERS):
                 links.append(link)
