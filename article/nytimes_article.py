@@ -12,49 +12,34 @@ from link.nytimes_link import NytimesLinkFetcher
 class NytimeArticleFetcher(ArticleFetcher):
 
     def __init__(self, config):
+        super(NytimeArticleFetcher, self).__init__(config)
         self.config = config
-        self.download_link_fetcher = None
-        self.html_fetcher = NetworkFetcher()
-        self.path = config.path
-
-        self.total_date = 0
-
-        config.start_date_ = config.start_date.replace(day=1)
-        if config.end_date.day > 1:
-            config.end_date_ = config.end_date.replace(day=1)
-            config.end_date_ += relativedelta(months=1)
-        else:
-            config.end_date_ = config.end_date
-
-        self._mkdir(self.path,
-                    config.start_date_,
-                    config.end_date_,
-                    config.step)
-
         self.download_link_fetcher = NytimesLinkFetcher(config)
 
-    def _get_storage_path(self, path, date):
-        return os.path.join(path, str(date.year), str(date.month))
-
     def _extract_title(self, soup):
-        return soup.title.get_text()
+        if soup.title is not None:
+            return soup.title.get_text()
 
     def _extract_published_date(self, soup):
-        publish_element = soup.find('meta', {'name': 'ptime'})
-        date = publish_element['content']
-        return '-'.join([date[:4], date[4:6], date[6:8]])
+        publish_element = soup.find('meta', property='article:published_time')
+        if publish_element is not None:
+            date = publish_element['content']
+            return date
 
     def _extract_authors(self, soup):
-        authors_element = soup.find('meta', {'name': 'author'})
-        return authors_element['content']
+        authors_element = soup.find('meta', property='article:author')
+        if authors_element is not None:
+            return authors_element['content']
 
     def _extract_description(self, soup):
         description_element = soup.find('meta', {'name': 'description'})
-        return description_element['content']
+        if description_element is not None:
+            return description_element['content']
 
     def _extract_section(self, soup):
         section_element = soup.find('meta', property='article:section')
-        return section_element['content']
+        if section_element is not None:
+            return section_element['content']
 
     def _extract_content(self, html):
         g = Goose({'enable_image_fetching': False})
