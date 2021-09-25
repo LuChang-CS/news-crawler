@@ -122,22 +122,26 @@ class BBCArticleFetcher(ArticleFetcher):
         self.download_link_fetcher = BBCLinkFetcher(config)
 
     def _extract_title(self, soup):
-        return soup.title.get_text()
+        if soup.title is not None:
+            return soup.title.get_text()
 
     def _extract_published_date(self, date):
         return date.strftime('%Y-%m-%d')
 
     def _extract_authors(self, soup):
         authors_elements = soup.find_all('meta', property='article:author')
-        return [authors_element['content'] for authors_element in authors_elements]
+        if authors_elements is not None:
+            return [authors_element['content'] for authors_element in authors_elements]
 
     def _extract_description(self, soup):
         description_element = soup.find('meta', property='og:description')
-        return description_element['content']
+        if description_element is not None:
+            return description_element['content']
 
     def _extract_section(self, soup):
         section_element = soup.find('meta', property='article:section')
-        return section_element['content']
+        if section_element is not None:
+            return section_element['content']
 
     def _extract_content(self, html):
         ContentExtractor.calculate_best_node = calculate_best_node
